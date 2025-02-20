@@ -1,0 +1,27 @@
+# General files to ignore
+HELP.md
+target/
+*.class
+
+# Maven wrapper
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# STS4 (Spring Tool Suite)
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+# IntelliJ IDEA (optional, keep if you might use IntelliJ)
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# VS Code (keep if you use VS Code)
+.vscode/
