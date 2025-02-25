@@ -3,18 +3,10 @@ package ch.devprojects.cms.model;
 import jakarta.persistence.*;
 
 /**
-  	•	@Entity → Marks the class as a database entity.
-	•	@Table(name = "contacts") → Maps to the contacts table in MySQL.
-	•	@Id @GeneratedValue → Auto-generates unique id.
-	•	@Column(nullable = false, unique = true) → Ensures required fields.
- */
-
-/**
  * Defines a Contact entity mapped to the contacts table.
  * Uses explicit constructors, getters, and setters (no Lombok).
  * @Id @GeneratedValue ensures auto-incrementing id.
  */
-
 @Entity
 @Table(name = "contacts")
 public class Contact {
@@ -25,13 +17,17 @@ public class Contact {
 
     private String firstname;
     private String lastname;
+
+    @Column(nullable = false, unique = true) // Ensures email is unique and not null
     private String email;
+
     private String phone;
 
-    // Constructors
+    // Default constructor
     public Contact() {
     }
 
+    // Parameterized constructor
     public Contact(String firstname, String lastname, String email, String phone) {
         this.firstname = firstname;
         this.lastname = lastname;
@@ -79,4 +75,4 @@ public class Contact {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-}
+}	

@@ -1,5 +1,7 @@
 package ch.devprojects.cms.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * Helps in sending clean responses.
@@ -7,16 +9,25 @@ package ch.devprojects.cms.dto;
  * Avoids exposing entity directly.
  */
 public class ContactDTO {
-	
+    
     private Long id;
+
+    @NotBlank(message = "Firstname is required")
     private String firstname;
+
+    @NotBlank(message = "Lastname is required")
     private String lastname;
+
+    @Email(message = "Email should be valid")
     private String email;
+
     private String phone;
 
+    // Default constructor
     public ContactDTO() {
     }
 
+    // Parameterized constructor
     public ContactDTO(Long id, String firstname, String lastname, String email, String phone) {
         this.id = id;
         this.firstname = firstname;

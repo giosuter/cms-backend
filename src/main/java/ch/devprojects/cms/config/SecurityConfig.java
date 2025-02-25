@@ -1,31 +1,36 @@
 package ch.devprojects.cms.config;
 
+import ch.devprojects.cms.security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.SecurityFilterChain;
-
-/**
- * @Configuration → Marks this as a Spring configuration class.
- * @Bean SecurityFilterChain → Defines security rules.
- * csrf.disable() → Disables CSRF (needed for non-browser clients).
- * authorizeHttpRequests().requestMatchers("/**").permitAll() → Allows all API endpoints without login.
- * formLogin().disable() → Disables Spring Boot’s login form.
- * httpBasic().disable() → Disables HTTP basic authentication.
- * 
- */
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class SecurityConfig {
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable()) // Disable CSRF for development
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/**").permitAll() // Allow all requests without
-																						// authentication
-				).formLogin(login -> login.disable()) // Disable default login form
-				.httpBasic(basic -> basic.disable()); // Disable basic authentication
+    private final CustomUserDetailsService customUserDetailsService;
 
-		return http.build();
-	}
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return customUserDetailsService;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager(); // Use the built-in method.
+    }
 }
